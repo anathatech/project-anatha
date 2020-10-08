@@ -6,11 +6,11 @@ The official golang implementation Project Anatha.
 
 ## Executables
 
-| Command | Description|
-|---|---|
-| `anathacli` | The command line Anatha Client tools.  Provides functionality to consume and participate in an existing Anatha Network. |
-| `anathad` | The Anatha daemon for configuring and running a validator node on a network. |
-| `anathad-manager` | A process manager for wrapping the the Anatha daemon, to provide additional functionality. |
+|   Command   | Description                             |
+|--------------------|-----------------------------------------|
+| `anathacli`        | The command line Anatha Client tools.  Provides functionality to consume and participate in an existing Anatha Network. |
+| `anathad`          | The Anatha daemon for configuring and running a validator node on a network. |
+| `anathad-manager`  | A process manager for wrapping the the Anatha daemon, to provide additional functionality. |
 
 Additional details and documentation setup steps (TBD)...
 
