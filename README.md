@@ -54,7 +54,3 @@ If you want more control over the process, you can run these steps manually.
 `make build-docker` will rebuild the docker images.
 
 ---
-
-## License
-
-...
