@@ -1,5 +1,31 @@
 # NOTICE
 
+### `Anathatech/Project-Anatha` Copyright
+
+The `anathatech/Project-Anatha` source code is licensed under GNU GPL 3.0.
+
+```
+Project Anatha is the official Golang implementation of the Anatha Network.
+Copyright (C) 2020 Anatha Inc.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```
+
+---
+
+### Dependency Attribution
+
 The `anathatech/Project-Anatha` source code is a consumer of the following third party open source dependencies.  Included here are their required notices & attribution.
 
 * https://github.com/anathatech/cosmosd
@@ -195,10 +221,6 @@ The `anathatech/Project-Anatha` source code is a consumer of the following third
     // (cross platform) and an interface that should be implemented if you want to
     // provide your own filesystem.
     ```
-
-* https://github.com/spf13/cobra
-  * ```
-    ```
  
 * https://github.com/spf13/pflag
   * ```
@@ -280,18 +302,6 @@ The `anathatech/Project-Anatha` source code is a consumer of the following third
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE."
-    ```
-    
-* https://github.com/tendermint/go-amino
-  * ```
-    ```
-        
-* https://github.com/tendermint/tendermint
-  * ```
-    ```
-     
-* https://github.com/tendermint/tm-db
-  * ```
     ```
 
 * https://github.com/go-yaml/yaml
