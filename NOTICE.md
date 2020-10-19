@@ -6,7 +6,7 @@ The `anathatech/Project-Anatha` source code is licensed under GNU GPL 3.0.
 
 ```
 Project Anatha is the official Golang implementation of the Anatha Network.
-Copyright (C) 2020 Anatha Inc.
+Copyright 2020 Anatha Inc.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ---
 
 ### Dependency Attribution
+
 The `anathatech/Project-Anatha` source code is a consumer of the following third party open source dependencies.  Included here are their required notices & attribution.
 
 * https://github.com/anathatech/cosmosd
@@ -199,21 +200,21 @@ The `anathatech/Project-Anatha` source code is a consumer of the following third
 * https://github.com/spf13/afero
   * ```
     Copyright © 2014 Steve Francia <spf@spf13.com>.
-    // Copyright 2013 tsuru authors. All rights reserved.
-    //
-    // Licensed under the Apache License, Version 2.0 (the ""License"");
-    // you may not use this file except in compliance with the License.
-    // You may obtain a copy of the License at
-    // http://www.apache.org/licenses/LICENSE-2.0
-    //
-    // Unless required by applicable law or agreed to in writing, software
-    // distributed under the License is distributed on an ""AS IS"" BASIS,
-    // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    // See the License for the specific language governing permissions and
-    // limitations under the License.
+    Copyright 2013 tsuru authors. All rights reserved.
     
-    // Package afero provides types and methods for interacting with the filesystem,
-    // as an abstraction layer.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    
+    Package afero provides types and methods for interacting with the filesystem,
+    as an abstraction layer.
     
     // Afero also provides a few implementations that are mostly interoperable. One that
     // uses the operating system filesystem, one that uses memory to store files
@@ -223,6 +224,17 @@ The `anathatech/Project-Anatha` source code is a consumer of the following third
 
 * https://github.com/spf13/cobra
   * ```
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
     ```
  
 * https://github.com/spf13/pflag
@@ -309,14 +321,54 @@ The `anathatech/Project-Anatha` source code is a consumer of the following third
     
 * https://github.com/tendermint/go-amino
   * ```
+    Tendermint Go-Amino
+    Copyright (C) 2015 Tendermint
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
     ```
         
 * https://github.com/tendermint/tendermint
   * ```
+    Copyright 2016 All in Bits, Inc
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+     limitations under the License.
     ```
      
 * https://github.com/tendermint/tm-db
   * ```
+    Copyright 2016 All in Bits, Inc
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+     limitations under the License.
     ```
 
 * https://github.com/go-yaml/yaml
