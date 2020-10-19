@@ -25,7 +25,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ---
 
 ### Dependency Attribution
-
 The `anathatech/Project-Anatha` source code is a consumer of the following third party open source dependencies.  Included here are their required notices & attribution.
 
 * https://github.com/anathatech/cosmosd
@@ -221,6 +220,10 @@ The `anathatech/Project-Anatha` source code is a consumer of the following third
     // (cross platform) and an interface that should be implemented if you want to
     // provide your own filesystem.
     ```
+
+* https://github.com/spf13/cobra
+  * ```
+    ```
  
 * https://github.com/spf13/pflag
   * ```
@@ -302,6 +305,18 @@ The `anathatech/Project-Anatha` source code is a consumer of the following third
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE."
+    ```
+    
+* https://github.com/tendermint/go-amino
+  * ```
+    ```
+        
+* https://github.com/tendermint/tendermint
+  * ```
+    ```
+     
+* https://github.com/tendermint/tm-db
+  * ```
     ```
 
 * https://github.com/go-yaml/yaml
