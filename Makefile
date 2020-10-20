@@ -30,9 +30,6 @@ go.sum: go.mod
 	@echo "--> Ensure dependencies have not been modified"
 	#GO111MODULE=on go mod verify
 
-test:
-	@go test -mod=readonly $(PACKAGES)
-
 # look into .golangci.yml for enabling / disabling linters
 lint:
 	@echo "--> Running linter"
@@ -57,3 +54,22 @@ localnet-stop:
 	docker-compose down
 
 localnet: clean build-linux build-docker localnet-start
+
+devnet-prepare:
+	./scripts/prepare-test.sh
+
+devnet-start:
+	DAEMON_NAME=anathad DAEMON_HOME=~/.anathad DAEMON_ALLOW_DOWNLOAD_BINARIES=on DAEMON_RESTART_AFTER_UPGRADE=on \
+	anathad-manager start --pruning="nothing" --log_level "main:info,state:info,x/crisis:info,x/hra:info,x/upgrade:info,x/gov:info,x/governance:info,x/treasury:info,x/distribution:debug,x/mint:debug,x/astaking:debug,*:error"
+
+devnet: clean install devnet-prepare devnet-start
+
+devnet-reset: clean devnet-prepare devnet-start
+
+# Create log files
+log-files:
+	sudo mkdir -p /var/log/anathad && sudo touch /var/log/anathad/anathad.log && sudo touch /var/log/anathad/anathad_error.log
+
+# Create service file
+create-service:
+	envsubst < ./scripts/anathad.service > ./anathad.service
