@@ -27,8 +27,8 @@ github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuy
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
-github.com/anathatech/cosmos-sdk v0.38.5-0.20200526203204-70797169030d h1:PYzgyUUAh2li4VwZ6Xaq2UAGL75UcQENkxH+tvnzV60=
-github.com/anathatech/cosmos-sdk v0.38.5-0.20200526203204-70797169030d/go.mod h1:rzWOofbKfRt3wxiylmYWEFHnxxGj0coyqgWl2I9obAw=
+github.com/anathatech/cosmos-sdk v0.38.5-0.20201102214748-0d5a47f063a8 h1:Y638ok6uKKvcBCGXYsH6cKkvHss6h2/teCL1CNtzh0o=
+github.com/anathatech/cosmos-sdk v0.38.5-0.20201102214748-0d5a47f063a8/go.mod h1:rzWOofbKfRt3wxiylmYWEFHnxxGj0coyqgWl2I9obAw=
 github.com/anathatech/cosmosd v0.2.2 h1:70QKENnEHXdJY5gUtd2GAb9JA1jzI7KlpFOjQUIjl7o=
 github.com/anathatech/cosmosd v0.2.2/go.mod h1:vYlicYtzqEnbbeEbhucAlhjQfqCf8vJEePjDbUstP9Q=
 github.com/apache/thrift v0.12.0/go.mod h1:cp2SuWMxlEZw2r+iP2GNCdIi4C1qmUzdZFSVb+bacwQ=

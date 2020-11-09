@@ -22,4 +22,4 @@ require (
 	gopkg.in/yaml.v2 v2.2.8
 )
 
-replace github.com/cosmos/cosmos-sdk => github.com/anathatech/cosmos-sdk v0.38.5-0.20200526203204-70797169030d
+replace github.com/cosmos/cosmos-sdk => github.com/anathatech/cosmos-sdk v0.38.5-0.20201102214748-0d5a47f063a8

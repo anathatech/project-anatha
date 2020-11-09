@@ -1,14 +1,12 @@
 package keeper
 
 import (
-	"github.com/cosmos/cosmos-sdk/x/supply"
-	abci "github.com/tendermint/tendermint/abci/types"
-	"strings"
-
+	"github.com/anathatech/project-anatha/x/hra/internal/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/anathatech/project-anatha/x/hra/internal/types"
+	"github.com/cosmos/cosmos-sdk/x/supply"
+	abci "github.com/tendermint/tendermint/abci/types"
 )
 
 const (
@@ -63,7 +61,7 @@ func queryName(ctx sdk.Context, path []string, req abci.RequestQuery, k Keeper) 
 
 	k.IterateBlockchainAddressInfos(ctx, nameInfo.Owner, func (info types.BlockchainAddressInfo) (stop bool) {
 		resNameInfo.Addresses = append(resNameInfo.Addresses, info)
-		
+
 		return false
 	})
 
@@ -89,9 +87,10 @@ func queryAddressNames(ctx sdk.Context, path []string, req abci.RequestQuery, k 
 	var names types.QueryResNames
 
 	for ; iterator.Valid(); iterator.Next() {
-		key := string(iterator.Key())
-		parts := strings.Split(key, types.Separator)
-		name := strings.Join(parts[1:], "")
+		key := iterator.Key()
+		key = key[22:]
+
+		name := string(key)
 		names = append(names, name)
 	}
 
@@ -117,9 +116,11 @@ func queryAddressNameInfos(ctx sdk.Context, path []string, req abci.RequestQuery
 	var names types.QueryResNameInfos
 
 	for ; iterator.Valid(); iterator.Next() {
-		key := string(iterator.Key())
-		parts := strings.Split(key, types.Separator)
-		name := strings.Join(parts[1:], "")
+
+		key := iterator.Key()
+		key = key[22:]
+
+		name := string(key)
 
 		nameInfo, found := k.GetNameInfo(ctx, name)
 		if found {
