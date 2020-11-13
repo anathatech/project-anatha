@@ -1,6 +1,6 @@
 # Project Anatha
 
-The official golang implementation Project Anatha.
+The official golang implementation for Project Anatha.
 
 ---
 
