@@ -86,17 +86,17 @@ func GetBlockchainAddressIteratorKey(address sdk.AccAddress) []byte {
 }
 
 func SplitBlockchainAddressKey(key []byte) (blockchainAddress BlockchainAddressInfo)  {
-	parts := strings.Split(string(key), Separator)
+	parts := strings.Split(string(key[22:]), Separator) // prefix + address + first separator
 
-	return NewBlockchainAddressInfo(parts[1], parts[2], "")
+	return NewBlockchainAddressInfo(parts[0], parts[1], "")
 }
 
 func SplitBlockchainAddressRecordKey(key []byte) (blockchainAddressRecord BlockchainAddressRecordInfo)  {
-	parts := strings.Split(string(key), Separator)
+	parts := strings.Split(string(key[22:]), Separator) // prefix + address + first separator
 
-	blockchainAddressInfo := NewBlockchainAddressInfo(parts[1], parts[2], "")
+	blockchainAddressInfo := NewBlockchainAddressInfo(parts[0], parts[1], "")
 
-	return NewBlockchainAddressRecordInfo(sdk.AccAddress(parts[0][1:]), blockchainAddressInfo)
+	return NewBlockchainAddressRecordInfo(sdk.AccAddress(key[1:21]), blockchainAddressInfo)
 }
 
 func GetCreditsKey(address sdk.AccAddress) []byte {
@@ -118,9 +118,9 @@ func SplitRegisteredBlockchainIdKey(key []byte) (string) {
 
 func splitKeyWithTime(key []byte) (name string, endTime time.Time) {
 	/*
-	if len(key[1:]) != 8 + lenTime {
-		panic(fmt.Sprintf("unexpected key length (%d ≠ %d)", len(key[1:]), lenTime + 8))
-	}
+		if len(key[1:]) != 8 + lenTime {
+			panic(fmt.Sprintf("unexpected key length (%d ≠ %d)", len(key[1:]), lenTime + 8))
+		}
 	*/
 
 	endTime, err := sdk.ParseTimeBytes(key[1 : 1 + lenTime])
