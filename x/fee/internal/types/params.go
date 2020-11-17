@@ -16,6 +16,7 @@ var (
 		"treasury/disburse_to_escrow",
 		"treasury/disburse_from_escrow",
 		"treasury/revert_from_escrow",
+		"treasury/swap",
 		"governance/submit_proposal",
 		"governance/vote",
 		"governance/expedite",

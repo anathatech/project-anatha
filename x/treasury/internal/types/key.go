@@ -35,6 +35,7 @@ const (
 	BuyBackFundModuleName 			= "treasury_buyback" 		// Module stores the bought back supply of Anatha (participates in distribution)
 	DistributionProfitsModuleName  	= "distribution_profits" 	// Module stores AST profits from Anatha purchases with AST
 	TreasuryEscrowModuleName        = "treasury_escrow"         // Module stores distributions without supplied recipient addresses
+	SwapEscrowModuleName			= "swap_escrow"             // Module stores ERC20 token balance
 )
 
 

@@ -15,6 +15,7 @@ const (
 	BuyBackFundModuleName = types.BuyBackFundModuleName
 	DistributionProfitsModuleName = types.DistributionProfitsModuleName
 	TreasuryEscrowModuleName = types.TreasuryEscrowModuleName
+	SwapEscrowModuleName	= types.SwapEscrowModuleName
 )
 
 var (
@@ -34,12 +35,14 @@ var (
 	NewMsgCancelDisbursement			= types.NewMsgCancelDisbursement
 	NewMsgCreateSellOrder				= types.NewMsgCreateSellOrder
 	NewMsgCreateBuyOrder				= types.NewMsgCreateBuyOrder
+	NewMsgSwap							= types.NewMsgSwap
 
 	NewAddBuyBackLiquidityProposal = types.NewAddBuyBackLiquidityProposal
 	NewRemoveBuyBackLiquidityProposal = types.NewRemoveBuyBackLiquidityProposal
 	NewBurnDistributionProfitsProposal = types.NewBurnDistributionProfitsProposal
 	NewTransferFromDistributionProfitsToBuyBackLiquidityProposal = types.NewTransferFromDistributionProfitsToBuyBackLiquidityProposal
-
+	NewTransferFromTreasuryToSwapEscrowProposal = types.NewTransferFromTreasuryToSwapEscrowProposal
+	NewTransferFromSwapEscrowToBuyBackProposal = types.NewTransferFromSwapEscrowToBuyBackProposal
 
 	// variable aliases
 	ModuleCdc     = types.ModuleCdc
@@ -54,6 +57,8 @@ type (
 	RemoveBuyBackLiquidityProposal = types.RemoveBuyBackLiquidityProposal
 	BurnDistributionProfitsProposal = types.BurnDistributionProfitsProposal
 	TransferFromDistributionProfitsToBuyBackLiquidityProposal = types.TransferFromDistributionProfitsToBuyBackLiquidityProposal
+	TransferFromTreasuryToSwapEscrowProposal = types.TransferFromTreasuryToSwapEscrowProposal
+	TransferFromSwapEscrowToBuyBackProposal = types.TransferFromSwapEscrowToBuyBackProposal
 
 	MsgAddOperator 					= types.MsgAddOperator
 	MsgRemoveOperator 				= types.MsgRemoveOperator
@@ -64,4 +69,5 @@ type (
 	MsgCancelDisbursement			= types.MsgCancelDisbursement
 	MsgCreateSellOrder				= types.MsgCreateSellOrder
 	MsgCreateBuyOrder				= types.MsgCreateBuyOrder
+	MsgSwap							= types.MsgSwap
 )

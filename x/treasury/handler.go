@@ -41,6 +41,9 @@ func NewHandler(k Keeper) sdk.Handler {
 		case MsgCreateBuyOrder:
 			return handleMsgCreateBuyOrder(ctx, k, msg)
 
+		case MsgSwap:
+			return handleMsgSwap(ctx, k, msg)
+
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", ModuleName,  msg)
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
@@ -62,6 +65,12 @@ func NewTreasuryProposalHandler(k Keeper) govtypes.Handler {
 
 			case TransferFromDistributionProfitsToBuyBackLiquidityProposal:
 				return handleTransferFromDistributionProfitsToBuyBackLiquidityProposal(ctx, k, c)
+
+			case TransferFromTreasuryToSwapEscrowProposal:
+				return handleTransferFromTreasuryToSwapEscrowProposal(ctx, k, c)
+
+			case TransferFromSwapEscrowToBuyBackProposal:
+				return handleTransferSwapEscrowToBuyBackProposal(ctx, k, c)
 
 		default:
 			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized treasury proposal content type: %T", c)
@@ -135,6 +144,44 @@ func handleTransferFromDistributionProfitsToBuyBackLiquidityProposal(ctx sdk.Con
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeTransferFromDistributionProfitsToBuyBackLiquidity,
+			sdk.NewAttribute(types.AttributeKeyTitle, p.Title),
+			sdk.NewAttribute(types.AttributeKeyDescription, p.Description),
+			sdk.NewAttribute(types.AttributeKeyAmount, p.Amount.String()),
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueModule),
+		),
+	)
+
+	return nil
+}
+
+func handleTransferFromTreasuryToSwapEscrowProposal(ctx sdk.Context, k Keeper, p TransferFromTreasuryToSwapEscrowProposal) error {
+	err := k.TransferFromTreasuryToSwapEscrow(ctx, p.Amount)
+	if err != nil {
+		return err
+	}
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeTransferFromTreasuryToSwapEscrow,
+			sdk.NewAttribute(types.AttributeKeyTitle, p.Title),
+			sdk.NewAttribute(types.AttributeKeyDescription, p.Description),
+			sdk.NewAttribute(types.AttributeKeyAmount, p.Amount.String()),
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.AttributeValueModule),
+		),
+	)
+
+	return nil
+}
+
+func handleTransferSwapEscrowToBuyBackProposal(ctx sdk.Context, k Keeper, p TransferFromSwapEscrowToBuyBackProposal) error {
+	err := k.TransferFromSwapEscrowToBuyBack(ctx, p.Amount)
+	if err != nil {
+		return err
+	}
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeTransferSwapEscrowToBuyBack,
 			sdk.NewAttribute(types.AttributeKeyTitle, p.Title),
 			sdk.NewAttribute(types.AttributeKeyDescription, p.Description),
 			sdk.NewAttribute(types.AttributeKeyAmount, p.Amount.String()),
@@ -224,6 +271,15 @@ func handleMsgCreateSellOrder(ctx sdk.Context, k Keeper, msg MsgCreateSellOrder)
 
 func handleMsgCreateBuyOrder(ctx sdk.Context, k Keeper, msg MsgCreateBuyOrder) (*sdk.Result, error) {
 	err := k.HandleCreateBuyOrder(ctx, msg.Buyer, msg.Amount)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
+}
+
+func handleMsgSwap(ctx sdk.Context, k Keeper, msg MsgSwap) (*sdk.Result, error) {
+	err := k.HandleSwap(ctx, msg.Operator, msg.Recipient, msg.Amount, msg.Reference)
 	if err != nil {
 		return nil, err
 	}

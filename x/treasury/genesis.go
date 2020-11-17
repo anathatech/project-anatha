@@ -33,6 +33,12 @@ func InitGenesis(ctx sdk.Context, k Keeper, data GenesisState) []abci.ValidatorU
 	k.SetTreasury(ctx, data.Treasury)
 	k.SetParams(ctx, data.Params)
 
+	// TODO: Temp for testing purposes
+	//err = k.TransferFromTreasuryToSwapEscrow(ctx, sdk.NewCoins(sdk.NewInt64Coin(config.DefaultDenom, 30000000000000000)))
+	//if err != nil {
+	//	panic(err)
+	//}
+
 	for _, disbursement := range data.DisbursementQueue {
 		k.InsertDisbursementQueue(ctx, disbursement)
 	}
