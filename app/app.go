@@ -276,7 +276,29 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 		app.subspaces[crisis.ModuleName], invCheckPeriod, app.supplyKeeper, distribution.AmcModuleName,
 	)
 
+	app.feeKeeper = fee.NewKeeper(
+		app.cdc,
+		keys[fee.StoreKey],
+		app.subspaces[fee.ModuleName],
+	)
+
 	app.upgradeKeeper = upgrade.NewKeeper(skipUpgradeHeights, keys[upgrade.StoreKey], app.cdc)
+
+	app.upgradeKeeper.SetUpgradeHandler("swap", func(ctx sdk.Context, plan upgrade.Plan) {
+		// Add "treasury/swap" to fee excluded messages
+		app.feeKeeper.SetFeeExcludedMessage(ctx, "treasury/swap")
+
+		// Transfer swap module balance from initial distribution account
+		// TODO: Change the address if necessary
+		swapAccountAddress := "anatha1atzrzll4k9r7et8pa6dx70vc3x8s7wkww0v7gf"
+
+		address, _ := sdk.AccAddressFromBech32(swapAccountAddress)
+
+		// TODO: Change the amount if necessary
+		amount := sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultDenom, 30000000000000000))
+
+		_ = app.supplyKeeper.SendCoinsFromAccountToModule(ctx, address, treasury.SwapEscrowModuleName, amount)
+	})
 
 	// create evidence keeper with evidence router
 	evidenceKeeper := evidence.NewKeeper(
@@ -308,12 +330,6 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 		app.supplyKeeper,
 		app.accountKeeper,
 		app.bankKeeper,
-	)
-
-	app.feeKeeper = fee.NewKeeper(
-		app.cdc,
-		keys[fee.StoreKey],
-		app.subspaces[fee.ModuleName],
 	)
 
 	// register the proposal types
