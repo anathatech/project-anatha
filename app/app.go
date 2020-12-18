@@ -282,6 +282,15 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 		app.subspaces[fee.ModuleName],
 	)
 
+	app.treasuryKeeper = treasury.NewKeeper(
+		app.cdc,
+		keys[treasury.StoreKey],
+		app.subspaces[treasury.ModuleName],
+		app.supplyKeeper,
+		app.accountKeeper,
+		app.bankKeeper,
+	)
+
 	app.upgradeKeeper = upgrade.NewKeeper(skipUpgradeHeights, keys[upgrade.StoreKey], app.cdc)
 
 	app.upgradeKeeper.SetUpgradeHandler("swap", func(ctx sdk.Context, plan upgrade.Plan) {
@@ -298,6 +307,10 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 		amount := sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultDenom, 30000000000000000))
 
 		_ = app.supplyKeeper.SendCoinsFromAccountToModule(ctx, address, treasury.SwapEscrowModuleName, amount)
+
+		// Remove devnet minted buyback liquidity funds
+		app.treasuryKeeper.BurnCoinsFromBuyBackLiquidityFund(ctx, sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultStableDenom, 10000000000000)))
+
 	})
 
 	// create evidence keeper with evidence router
@@ -321,15 +334,6 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 
 	app.hraKeeper = *hraKeeper.SetHooks(
 		hra.NewMultiNameHooks(app.distributionKeeper.NameHooks()),
-	)
-
-	app.treasuryKeeper = treasury.NewKeeper(
-		app.cdc,
-		keys[treasury.StoreKey],
-		app.subspaces[treasury.ModuleName],
-		app.supplyKeeper,
-		app.accountKeeper,
-		app.bankKeeper,
 	)
 
 	// register the proposal types
