@@ -311,6 +311,15 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 		// Remove devnet minted buyback liquidity funds
 		app.treasuryKeeper.BurnCoinsFromBuyBackLiquidityFund(ctx, sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultStableDenom, 10000000000000)))
 
+		app.feeKeeper.SetParams(
+			ctx,
+			fee.NewParams(
+				app.feeKeeper.FeePercentage(ctx),
+				app.feeKeeper.MinimumFee(ctx),
+				sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultDenom, 100000000)),
+			),
+		)
+
 	})
 
 	// create evidence keeper with evidence router

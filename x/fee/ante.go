@@ -150,9 +150,14 @@ func (d FeeDecorator) CalculateSystemFee(ctx sdk.Context, txFee sdk.Coins) sdk.C
 
 	systemFee := sdk.NewCoins(sdk.NewCoin(config.DefaultDenom, systemFeeInt))
 	minimumFee := d.feeKeeper.MinimumFee(ctx)
+	maximumFee := d.feeKeeper.MaximumFee(ctx)
 
 	if systemFee.IsAllLT(minimumFee) {
-		systemFee = minimumFee
+		return minimumFee
+	}
+
+	if systemFee.IsAllGT(maximumFee) {
+		return maximumFee
 	}
 
 	return systemFee

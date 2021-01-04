@@ -10,6 +10,7 @@ import (
 var (
 	DefaultFeePercentage 		= sdk.NewDecWithPrec(2, 3)
 	DefaultMinimumFee 			= sdk.NewCoins(sdk.NewInt64Coin(config.DefaultDenom, 200)) // 200pin
+	DefaultMaximumFee           = sdk.NewCoins(sdk.NewInt64Coin(config.DefaultDenom, 100000000)) // 1 anatha
 
 	DefaultFeeExcludedMessages = []string {
 		"treasury/disburse",
@@ -23,6 +24,7 @@ var (
 
 	KeyFeePercentage 			= []byte("FeePercentage")
 	KeyMinimumFee				= []byte("MinimumFee")
+	KeyMaximumFee				= []byte("MaximumFee")
 )
 
 func ParamKeyTable() params.KeyTable {
@@ -32,13 +34,15 @@ func ParamKeyTable() params.KeyTable {
 type Params struct {
 	FeePercentage			sdk.Dec			`json:"fee_percentage" yaml:"fee_percentage"`
 	MinimumFee				sdk.Coins		`json:"minimum_fee" yaml:"minimum_fee"`
+	MaximumFee				sdk.Coins 		`json:"maximum_fee" yaml:"maximum_fee"`
 }
 
 
-func NewParams(feePercentage sdk.Dec, minimumFee sdk.Coins) Params {
+func NewParams(feePercentage sdk.Dec, minimumFee sdk.Coins, maximumFee sdk.Coins) Params {
 	return Params{
 		FeePercentage: feePercentage,
 		MinimumFee: minimumFee,
+		MaximumFee: maximumFee,
 	}
 }
 
@@ -53,6 +57,7 @@ func (p *Params) ParamSetPairs() params.ParamSetPairs {
 	return params.ParamSetPairs{
 		params.NewParamSetPair(KeyFeePercentage, &p.FeePercentage, validateFeePercentage),
 		params.NewParamSetPair(KeyMinimumFee, &p.MinimumFee, validateFee),
+		params.NewParamSetPair(KeyMaximumFee, &p.MaximumFee, validateFee),
 	}
 }
 
@@ -61,6 +66,7 @@ func DefaultParams() Params {
 	return NewParams(
 		DefaultFeePercentage,
 		DefaultMinimumFee,
+		DefaultMaximumFee,
 	)
 }
 
@@ -70,6 +76,10 @@ func (p Params) Validate() error {
 	}
 
 	if err := validateFee(p.MinimumFee); err != nil {
+		return err
+	}
+
+	if err := validateFee(p.MaximumFee); err != nil {
 		return err
 	}
 
