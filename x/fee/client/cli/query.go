@@ -21,11 +21,36 @@ func GetQueryCmd(queryRoute string, cdc *codec.Codec) *cobra.Command {
 
 	feeQueryCmd.AddCommand(
 		flags.GetCommands(
+			GetCmdQueryParams(queryRoute, cdc),
 			GetCmdGetFeeExcludedMessages(queryRoute, cdc),
 		)...,
 	)
 
 	return feeQueryCmd
+}
+
+func GetCmdQueryParams(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "params",
+		Short: "Query the current fee module parameters",
+		Args:  cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+
+			route := fmt.Sprintf("custom/%s/parameters", queryRoute)
+			res, _, err := cliCtx.QueryWithData(route, nil)
+			if err != nil {
+				return err
+			}
+
+			var params types.Params
+			if err := cdc.UnmarshalJSON(res, &params); err != nil {
+				return err
+			}
+
+			return cliCtx.PrintOutput(params)
+		},
+	}
 }
 
 func GetCmdGetFeeExcludedMessages(queryRoute string, cdc *codec.Codec) *cobra.Command {
