@@ -12,6 +12,7 @@ import (
 	"github.com/anathatech/project-anatha/x/treasury"
 	"io"
 	"os"
+	"time"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
@@ -319,6 +320,11 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 				sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultDenom, 100000000)),
 			),
 		)
+
+		// Update risk assesment duration to 24 hours
+		treasuryParams := app.treasuryKeeper.GetParams(ctx)
+		treasuryParams.RiskAssessmentDuration = time.Hour * 24
+		app.treasuryKeeper.SetParams(ctx, treasuryParams)
 
 	})
 
