@@ -69,3 +69,34 @@ func (k Keeper) TransferFromDistributionProfitsToBuyBackLiquidity(ctx sdk.Contex
 
 	return nil
 }
+
+func (k Keeper) TransferFromTreasuryToSwapEscrow(ctx sdk.Context, amount sdk.Coins) error {
+	err := k.supplyKeeper.SendCoinsFromModuleToModule(ctx, types.ModuleName, types.SwapEscrowModuleName, amount)
+	if err != nil {
+		return err
+	}
+
+	treasury := k.GetTreasury(ctx)
+	treasury.Distributed = treasury.Distributed.Add(amount...)
+	k.SetTreasury(ctx, treasury)
+
+	return nil
+}
+
+func (k Keeper) TransferFromSwapEscrowToBuyBack(ctx sdk.Context, amount sdk.Coins) error {
+	err := k.supplyKeeper.SendCoinsFromModuleToModule(ctx, types.SwapEscrowModuleName, types.BuyBackFundModuleName, amount)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (k Keeper) TransferFromSwapEscrow(ctx sdk.Context, recipient sdk.AccAddress, amount sdk.Coins) error {
+	err := k.supplyKeeper.SendCoinsFromModuleToAccount(ctx, types.SwapEscrowModuleName, recipient, amount)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

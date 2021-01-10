@@ -1,6 +1,6 @@
 PACKAGES=$(shell go list ./... | grep -v '/simulation')
 
-VERSION := 0.1.1
+VERSION := 0.2.0
 COMMIT := $(shell git log -1 --format='%H')
 
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=Anatha \
@@ -25,6 +25,9 @@ build: go.sum
 
 build-linux: go.sum
 	GOOS=linux GOARCH=amd64 $(MAKE) build
+
+build-darwin: go.sum
+	GOOS=darwin GOARCH=amd64 $(MAKE) build
 
 go.sum: go.mod
 	@echo "--> Ensure dependencies have not been modified"
@@ -60,7 +63,7 @@ devnet-prepare:
 
 devnet-start:
 	DAEMON_NAME=anathad DAEMON_HOME=~/.anathad DAEMON_ALLOW_DOWNLOAD_BINARIES=on DAEMON_RESTART_AFTER_UPGRADE=on \
-	anathad-manager start --pruning="nothing" --log_level "main:info,state:info,x/crisis:info,x/hra:info,x/upgrade:info,x/gov:info,x/governance:info,x/treasury:info,x/distribution:debug,x/mint:debug,x/astaking:debug,*:error"
+	anathad-manager start --pruning="nothing" --log_level "main:info,state:info,x/crisis:info,x/hra:info,x/upgrade:debug,x/gov:info,x/governance:info,x/treasury:info,x/distribution:debug,x/mint:debug,x/astaking:debug,*:error"
 
 devnet: clean install devnet-prepare devnet-start
 

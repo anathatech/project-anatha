@@ -15,11 +15,14 @@ func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgCancelDisbursement{}, "treasury/CancelDisbursement", nil)
 	cdc.RegisterConcrete(MsgCreateSellOrder{}, "treasury/CreateSellOrder", nil)
 	cdc.RegisterConcrete(MsgCreateBuyOrder{}, "treasury/CreateBuyOrder", nil)
+	cdc.RegisterConcrete(MsgSwap{}, "treasury/Swap", nil)
 
 	cdc.RegisterConcrete(AddBuyBackLiquidityProposal{}, "treasury/AddBuyBackLiquidityProposal", nil)
 	cdc.RegisterConcrete(RemoveBuyBackLiquidityProposal{}, "treasury/RemoveBuyBackLiquidityProposal", nil)
 	cdc.RegisterConcrete(BurnDistributionProfitsProposal{}, "treasury/BurnDistributionProfitsProposal", nil)
 	cdc.RegisterConcrete(TransferFromDistributionProfitsToBuyBackLiquidityProposal{}, "treasury/TransferFromDistributionProfitsToBuyBackLiquidityProposal", nil)
+	cdc.RegisterConcrete(TransferFromTreasuryToSwapEscrowProposal{}, "treasury/TransferFromTreasuryToSwapEscrowProposal", nil)
+	cdc.RegisterConcrete(TransferFromSwapEscrowToBuyBackProposal{}, "treasury/TransferFromSwapEscrowToBuyBackProposal", nil)
 }
 
 // ModuleCdc defines the module codec

@@ -34,6 +34,7 @@ func GetTxCmd(cdc *codec.Codec) *cobra.Command {
 		GetCmdDisburseToEscrow(cdc),
 		GetCmdDisburseFromEscrow(cdc),
 		GetCmdRevertFromEscrow(cdc),
+		GetCmdSwap(cdc),
 	)...)
 
 	return treasuryTxCmd
@@ -63,6 +64,40 @@ func GetCmdDisburse(cdc *codec.Codec) *cobra.Command {
 			reference := args[2]
 
 			msg := types.NewMsgDisburse(cliCtx.GetFromAddress(), recipient, amount, reference)
+			err = msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+}
+
+func GetCmdSwap(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "swap [recipient] [amount] [reference]",
+		Short: "Swap treasury funds",
+		Args:  cobra.ExactArgs(3),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+
+			recipient, err := sdk.AccAddressFromBech32(args[0])
+			if err != nil {
+				return err
+			}
+
+			amount, err := denom.ParseAndConvertCoins(args[1])
+			if err != nil {
+				return err
+			}
+
+			reference := args[2]
+
+			msg := types.NewMsgSwap(cliCtx.GetFromAddress(), recipient, amount, reference)
 			err = msg.ValidateBasic()
 			if err != nil {
 				return err

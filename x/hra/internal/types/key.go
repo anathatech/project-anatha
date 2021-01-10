@@ -118,9 +118,9 @@ func SplitRegisteredBlockchainIdKey(key []byte) (string) {
 
 func splitKeyWithTime(key []byte) (name string, endTime time.Time) {
 	/*
-		if len(key[1:]) != 8 + lenTime {
-			panic(fmt.Sprintf("unexpected key length (%d ≠ %d)", len(key[1:]), lenTime + 8))
-		}
+	if len(key[1:]) != 8 + lenTime {
+		panic(fmt.Sprintf("unexpected key length (%d ≠ %d)", len(key[1:]), lenTime + 8))
+	}
 	*/
 
 	endTime, err := sdk.ParseTimeBytes(key[1 : 1 + lenTime])

@@ -13,6 +13,8 @@ const (
 	ProposalTypeRemoveBuyBackLiquidity = "RemoveBuyBackLiquidity"
 	ProposalTypeBurnDistributionProfits = "BurnDistributionProfits"
 	ProposalTypeTransferFromDistributionProfitsToBuyBackLiquidity = "TransferFromDistributionProfitsToBuyBackLiquidity"
+	ProposalTypeTransferFromTreasuryToSwapEscrow = "TransferFromTreasuryToSwapEscrow"
+	ProposalTypeTransferSwapEscrowToBuyBack = "TransferSwapEscrowToBuyBack"
 )
 
 func init() {
@@ -24,6 +26,10 @@ func init() {
 	gov.RegisterProposalTypeCodec(BurnDistributionProfitsProposal{}, "treasury/BurnDistributionProfitsProposal")
 	gov.RegisterProposalType(ProposalTypeTransferFromDistributionProfitsToBuyBackLiquidity)
 	gov.RegisterProposalTypeCodec(TransferFromDistributionProfitsToBuyBackLiquidityProposal{}, "treasury/TransferFromDistributionProfitsToBuyBackLiquidityProposal")
+	gov.RegisterProposalType(ProposalTypeTransferFromTreasuryToSwapEscrow)
+	gov.RegisterProposalTypeCodec(TransferFromTreasuryToSwapEscrowProposal{}, "treasury/TransferFromTreasuryToSwapEscrowProposal")
+	gov.RegisterProposalType(ProposalTypeTransferSwapEscrowToBuyBack)
+	gov.RegisterProposalTypeCodec(TransferFromSwapEscrowToBuyBackProposal{}, "treasury/TransferFromSwapEscrowToBuyBackProposal")
 }
 
 var _ gov.Content = AddBuyBackLiquidityProposal{}
@@ -148,6 +154,70 @@ func (p TransferFromDistributionProfitsToBuyBackLiquidityProposal) ValidateBasic
 
 func (p TransferFromDistributionProfitsToBuyBackLiquidityProposal) String() string {
 	return fmt.Sprintf(`Transfer From Distribution Profits To BuyBack Liquidity Proposal:
+  Title: 		%s
+  Description: 	%s
+  Amount: 		%s
+`, p.Title, p.Description, p.Amount)
+}
+
+var _ gov.Content = TransferFromTreasuryToSwapEscrowProposal{}
+
+type TransferFromTreasuryToSwapEscrowProposal struct {
+	Title       string `json:"title" yaml:"title"`
+	Description string `json:"description" yaml:"description"`
+	Amount 		sdk.Coins `json:"amount" yaml:"amount"`
+}
+
+func NewTransferFromTreasuryToSwapEscrowProposal(title, description string, amount sdk.Coins) gov.Content {
+	return TransferFromTreasuryToSwapEscrowProposal{title, description, amount}
+}
+
+func (p TransferFromTreasuryToSwapEscrowProposal) GetTitle() string       { return p.Title }
+func (p TransferFromTreasuryToSwapEscrowProposal) GetDescription() string { return p.Description }
+func (p TransferFromTreasuryToSwapEscrowProposal) ProposalRoute() string  { return RouterKey }
+func (p TransferFromTreasuryToSwapEscrowProposal) ProposalType() string   { return ProposalTypeTransferFromTreasuryToSwapEscrow }
+func (p TransferFromTreasuryToSwapEscrowProposal) ValidateBasic() error {
+	if ! p.Amount.IsValid() || p.Amount.AmountOf(config.DefaultDenom).IsZero() {
+		return sdkerrors.ErrInvalidCoins
+	}
+
+	return gov.ValidateAbstract(p)
+}
+
+func (p TransferFromTreasuryToSwapEscrowProposal) String() string {
+	return fmt.Sprintf(`Transfer from Treasury to Swap Escrow Proposal:
+  Title: 		%s
+  Description: 	%s
+  Amount: 		%s
+`, p.Title, p.Description, p.Amount)
+}
+
+var _ gov.Content = TransferFromSwapEscrowToBuyBackProposal{}
+
+type TransferFromSwapEscrowToBuyBackProposal struct {
+	Title       string `json:"title" yaml:"title"`
+	Description string `json:"description" yaml:"description"`
+	Amount 		sdk.Coins `json:"amount" yaml:"amount"`
+}
+
+func NewTransferFromSwapEscrowToBuyBackProposal(title, description string, amount sdk.Coins) gov.Content {
+	return TransferFromSwapEscrowToBuyBackProposal{title, description, amount}
+}
+
+func (p TransferFromSwapEscrowToBuyBackProposal) GetTitle() string       { return p.Title }
+func (p TransferFromSwapEscrowToBuyBackProposal) GetDescription() string { return p.Description }
+func (p TransferFromSwapEscrowToBuyBackProposal) ProposalRoute() string  { return RouterKey }
+func (p TransferFromSwapEscrowToBuyBackProposal) ProposalType() string   { return ProposalTypeTransferSwapEscrowToBuyBack }
+func (p TransferFromSwapEscrowToBuyBackProposal) ValidateBasic() error {
+	if ! p.Amount.IsValid() || p.Amount.AmountOf(config.DefaultDenom).IsZero() {
+		return sdkerrors.ErrInvalidCoins
+	}
+
+	return gov.ValidateAbstract(p)
+}
+
+func (p TransferFromSwapEscrowToBuyBackProposal) String() string {
+	return fmt.Sprintf(`Transfer from Swap Escrow to BuyBack Proposal:
   Title: 		%s
   Description: 	%s
   Amount: 		%s

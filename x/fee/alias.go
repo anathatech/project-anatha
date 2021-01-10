@@ -22,6 +22,8 @@ var (
 	DefaultGenesisState                = types.DefaultGenesisState
 	ValidateGenesis                    = types.ValidateGenesis
 
+	NewParams                          = types.NewParams
+
 	// variable aliases
 	ModuleCdc     = types.ModuleCdc
 )

@@ -8,7 +8,7 @@ mkdir -p ~/.anathad/upgrade_manager/genesis/bin
 mkdir -p ~/.anathad/upgrade_manager/upgrades
 
 # symlink genesis binary to upgrade
-ln -s $(which anathad) ~/.anathad/upgrade_manager/genesis/bin/anathad
+cp $(which anathad) ~/.anathad/upgrade_manager/genesis/bin
 
 # MANAGER
 # anatha1qaf2gssp652s6np00a5cxdwytdf3vutdumwc0q

@@ -11,11 +11,15 @@ const (
 	EventTypeCreateSellOrder	= "create_sell_order"
 	EventTypeCreateBuyOrder		= "create_buy_order"
 	EventTypeTransfer			= "transfer_to_distribution_module"
+	EventTypeSwap				= "swap"
 
 	EventTypeAddBuyBackLiquidity = "AddBuyBackLiquidity"
 	EventTypeRemoveBuyBackLiquidity = "RemoveBuyBackLiquidity"
 	EventTypeBurnDistributionProfits = "BurnDistributionProfits"
 	EventTypeTransferFromDistributionProfitsToBuyBackLiquidity = "TransferFromDistributionProfitsToBuyBackLiquidity"
+	EventTypeTransferFromTreasuryToSwapEscrow = "TransferFromTreasuryToSwapEscrow"
+	EventTypeTransferSwapEscrowToBuyBack = "TransferSwapEscrowToBuyBack"
+
 
 	AttributeKeySender				= "sender"
 	AttributeKeyRecipient  			= "recipient"

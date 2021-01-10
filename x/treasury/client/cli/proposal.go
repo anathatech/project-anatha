@@ -148,3 +148,71 @@ func GetCmdSubmitTransferFromDistributionProfitsToBuyBackLiquidityProposal(cdc *
 
 	return cmd
 }
+
+func GetCmdSubmitTransferFromTreasuryToSwapEscrowProposal(cdc *codec.Codec) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "transfer-from-treasury-to-swap-escrow [proposal-file]",
+		Args:  cobra.ExactArgs(1),
+		Short: "Transfer From Treasury To Swap Escrow",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+			cliCtx := context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
+
+			proposal, err := treasuryutils.ParseGenericTreasuryProposalJSON(cdc, args[0])
+			if err != nil {
+				return err
+			}
+
+			from := cliCtx.GetFromAddress()
+			content := types.NewTransferFromTreasuryToSwapEscrowProposal(
+				proposal.Title,
+				proposal.Description,
+				proposal.Amount,
+			)
+
+			msg := governance.NewMsgSubmitProposal(content, from)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+
+	return cmd
+}
+
+func GetCmdSubmitTransferFromSwapEscrowToBuyBackProposal(cdc *codec.Codec) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "transfer-from-swap-escrow-to-buyback [proposal-file]",
+		Args:  cobra.ExactArgs(1),
+		Short: "Transfer From Swap Escrow To BuyBack",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+			cliCtx := context.NewCLIContextWithInput(inBuf).WithCodec(cdc)
+
+			proposal, err := treasuryutils.ParseGenericTreasuryProposalJSON(cdc, args[0])
+			if err != nil {
+				return err
+			}
+
+			from := cliCtx.GetFromAddress()
+			content := types.NewTransferFromSwapEscrowToBuyBackProposal(
+				proposal.Title,
+				proposal.Description,
+				proposal.Amount,
+			)
+
+			msg := governance.NewMsgSubmitProposal(content, from)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+
+	return cmd
+}

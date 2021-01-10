@@ -355,3 +355,48 @@ func (msg MsgCreateBuyOrder) GetSignBytes() []byte {
 func (msg MsgCreateBuyOrder) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Buyer}
 }
+
+// MsgSwap
+type MsgSwap struct {
+	Operator  sdk.AccAddress `json:"operator" yaml:"operator"`
+	Recipient sdk.AccAddress `json:"recipient" yaml:"recipient"`
+	Amount    sdk.Coins      `json:"amount" yaml:"amount"`
+	Reference string         `json:"reference" yaml:"reference"`
+}
+
+func NewMsgSwap(sender sdk.AccAddress, recipient sdk.AccAddress, amount sdk.Coins, reference string) MsgSwap {
+	return MsgSwap{
+		Operator:  sender,
+		Recipient: recipient,
+		Amount:    amount,
+		Reference: reference,
+	}
+}
+
+func (msg MsgSwap) Route() string { return RouterKey }
+
+func (msg MsgSwap) Type() string { return "swap" }
+
+func (msg MsgSwap) ValidateBasic() error {
+	if msg.Operator.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Operator.String())
+	}
+	if msg.Recipient.Empty() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, msg.Operator.String())
+	}
+	if ! msg.Amount.AmountOf(config.DefaultDenom).IsPositive() {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid amount.")
+	}
+	if len(msg.Reference) > 255 {
+		return sdkerrors.Wrapf(sdkerrors.ErrMemoTooLarge, "Reference too long")
+	}
+	return nil
+}
+
+func (msg MsgSwap) GetSignBytes() []byte {
+	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
+}
+
+func (msg MsgSwap) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Operator}
+}

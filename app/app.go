@@ -12,6 +12,7 @@ import (
 	"github.com/anathatech/project-anatha/x/treasury"
 	"io"
 	"os"
+	"time"
 
 	abci "github.com/tendermint/tendermint/abci/types"
 	"github.com/tendermint/tendermint/libs/log"
@@ -69,6 +70,8 @@ var (
 			treasuryclient.RemoveBuyBackLiquidityProposalHandler,
 			treasuryclient.BurnDistributionProfitsProposalHandler,
 			treasuryclient.TransferFromDistributionProfitsToBuyBackLiquidityProposalHandler,
+			treasuryclient.TransferFromTreasuryToSwapEscrowProposalHandler,
+			treasuryclient.TransferFromSwapEscrowToBuyBackProposalHandler,
 		),
 		params.AppModuleBasic{},
 		crisis.AppModuleBasic{},
@@ -89,6 +92,7 @@ var (
 		treasury.BuyBackFundModuleName:           nil,
 		treasury.DistributionProfitsModuleName:   {supply.Burner},
 		treasury.TreasuryEscrowModuleName:        nil,
+		treasury.SwapEscrowModuleName:            nil,
 		staking.BondedPoolName:                   {supply.Burner, supply.Staking},
 		staking.NotBondedPoolName:                {supply.Burner, supply.Staking},
 		gov.ModuleName:                           nil,
@@ -273,7 +277,56 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 		app.subspaces[crisis.ModuleName], invCheckPeriod, app.supplyKeeper, distribution.AmcModuleName,
 	)
 
+	app.feeKeeper = fee.NewKeeper(
+		app.cdc,
+		keys[fee.StoreKey],
+		app.subspaces[fee.ModuleName],
+	)
+
+	app.treasuryKeeper = treasury.NewKeeper(
+		app.cdc,
+		keys[treasury.StoreKey],
+		app.subspaces[treasury.ModuleName],
+		app.supplyKeeper,
+		app.accountKeeper,
+		app.bankKeeper,
+	)
+
 	app.upgradeKeeper = upgrade.NewKeeper(skipUpgradeHeights, keys[upgrade.StoreKey], app.cdc)
+
+	app.upgradeKeeper.SetUpgradeHandler("swap", func(ctx sdk.Context, plan upgrade.Plan) {
+		// Add "treasury/swap" to fee excluded messages
+		app.feeKeeper.SetFeeExcludedMessage(ctx, "treasury/swap")
+
+		// Transfer swap module balance from initial distribution account
+		// TODO: Change the address if necessary
+		swapAccountAddress := "anatha1atzrzll4k9r7et8pa6dx70vc3x8s7wkww0v7gf"
+
+		address, _ := sdk.AccAddressFromBech32(swapAccountAddress)
+
+		// TODO: Change the amount if necessary
+		amount := sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultDenom, 30000000000000000))
+
+		_ = app.supplyKeeper.SendCoinsFromAccountToModule(ctx, address, treasury.SwapEscrowModuleName, amount)
+
+		// Remove devnet minted buyback liquidity funds
+		app.treasuryKeeper.BurnCoinsFromBuyBackLiquidityFund(ctx, sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultStableDenom, 10000000000000)))
+
+		app.feeKeeper.SetParams(
+			ctx,
+			fee.NewParams(
+				app.feeKeeper.FeePercentage(ctx),
+				app.feeKeeper.MinimumFee(ctx),
+				sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultDenom, 100000000)),
+			),
+		)
+
+		// Update risk assesment duration to 24 hours
+		treasuryParams := app.treasuryKeeper.GetParams(ctx)
+		treasuryParams.RiskAssessmentDuration = time.Hour * 24
+		app.treasuryKeeper.SetParams(ctx, treasuryParams)
+
+	})
 
 	// create evidence keeper with evidence router
 	evidenceKeeper := evidence.NewKeeper(
@@ -296,21 +349,6 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 
 	app.hraKeeper = *hraKeeper.SetHooks(
 		hra.NewMultiNameHooks(app.distributionKeeper.NameHooks()),
-	)
-
-	app.treasuryKeeper = treasury.NewKeeper(
-		app.cdc,
-		keys[treasury.StoreKey],
-		app.subspaces[treasury.ModuleName],
-		app.supplyKeeper,
-		app.accountKeeper,
-		app.bankKeeper,
-	)
-
-	app.feeKeeper = fee.NewKeeper(
-		app.cdc,
-		keys[fee.StoreKey],
-		app.subspaces[fee.ModuleName],
 	)
 
 	// register the proposal types

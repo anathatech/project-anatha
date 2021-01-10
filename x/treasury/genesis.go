@@ -1,9 +1,8 @@
 package treasury
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/anathatech/project-anatha/config"
 	"github.com/anathatech/project-anatha/x/treasury/internal/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	abci "github.com/tendermint/tendermint/abci/types"
 )
 
@@ -14,10 +13,10 @@ func InitGenesis(ctx sdk.Context, k Keeper, data GenesisState) []abci.ValidatorU
 	}
 
 	// devnet TODO: Temporary for testing purposes
-	err := k.MintCoinsToBuyBackLiquidityFund(ctx, sdk.NewCoins(sdk.NewInt64Coin(config.DefaultStableDenom, 10000000000000)))
-	if err != nil {
-		panic(err)
-	}
+	//err := k.MintCoinsToBuyBackLiquidityFund(ctx, sdk.NewCoins(sdk.NewInt64Coin(config.DefaultStableDenom, 10000000000000)))
+	//if err != nil {
+	//	panic(err)
+	//}
 
 	if data.Treasury.MintGenesisSupply {
 		targetSupply := data.Treasury.TargetSupply
@@ -32,6 +31,12 @@ func InitGenesis(ctx sdk.Context, k Keeper, data GenesisState) []abci.ValidatorU
 
 	k.SetTreasury(ctx, data.Treasury)
 	k.SetParams(ctx, data.Params)
+
+	// TODO: Temp for testing purposes
+	//err = k.TransferFromTreasuryToSwapEscrow(ctx, sdk.NewCoins(sdk.NewInt64Coin(config.DefaultDenom, 30000000000000000)))
+	//if err != nil {
+	//	panic(err)
+	//}
 
 	for _, disbursement := range data.DisbursementQueue {
 		k.InsertDisbursementQueue(ctx, disbursement)
