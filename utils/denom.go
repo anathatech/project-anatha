@@ -18,7 +18,7 @@ var (
 	reDecCoin   = regexp.MustCompile(fmt.Sprintf(`^(%s)%s(%s)$`, reDecAmt, reSpc, reDnmString))
 )
 
-// usd -> din
+// fiat -> din
 // anatha, sense -> pin
 func ParseAndConvertCoins(input string) (sdk.Coins, error) {
 	input = strings.TrimSpace(input)
@@ -103,7 +103,7 @@ func ToBaseDenom(coin sdk.Coin) (sdk.Coin, error) {
 	var err error
 	baseCoin := coin
 
-	if coin.Denom == "usd" {
+	if coin.Denom == "fiat" {
 
 		baseCoin, err = sdk.ConvertCoin(coin, "din")
 
@@ -135,7 +135,7 @@ func DecToBaseDenom(decCoin sdk.DecCoin) (sdk.Coin, error) {
 	var err error
 	baseDecCoin := decCoin
 
-	if decCoin.Denom == "usd" {
+	if decCoin.Denom == "fiat" {
 
 		unit, _ := sdk.GetDenomUnit("din")
 

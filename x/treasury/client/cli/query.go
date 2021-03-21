@@ -132,7 +132,7 @@ func GetCmdDisbursements(queryRoute string, cdc *codec.Codec) *cobra.Command {
 func GetCmdQueryPrice(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "price [amount]",
-		Short: "Query the current price (usd, anatha)",
+		Short: "Query the current price (fiat, anatha)",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)

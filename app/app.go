@@ -534,6 +534,6 @@ func RegisterCoinDenoms() {
 	_ = sdk.RegisterDenom("sense", sdk.NewDecWithPrec(1, 3))
 	_ = sdk.RegisterDenom("pin", sdk.NewDecWithPrec(1, 8))
 
-	_ = sdk.RegisterDenom("usd", sdk.OneDec())
+	_ = sdk.RegisterDenom("fiat", sdk.OneDec())
 	_ = sdk.RegisterDenom("din", sdk.NewDecWithPrec(1, 10))
 }
