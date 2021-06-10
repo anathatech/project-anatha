@@ -328,6 +328,13 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 
 	})
 
+	app.upgradeKeeper.SetUpgradeHandler("delay", func(ctx sdk.Context, plan upgrade.Plan) {
+		// Update risk assesment duration to 1 hour
+		treasuryParams := app.treasuryKeeper.GetParams(ctx)
+		treasuryParams.RiskAssessmentDuration = time.Hour
+		app.treasuryKeeper.SetParams(ctx, treasuryParams)
+	})
+
 	// create evidence keeper with evidence router
 	evidenceKeeper := evidence.NewKeeper(
 		app.cdc, keys[evidence.StoreKey], app.subspaces[evidence.ModuleName], &stakingKeeper, app.slashingKeeper,
