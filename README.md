@@ -4,6 +4,10 @@ The official golang implementation for Project Anatha.
 
 ---
 
+For instructions on setting up a validator on the Anatha network, view the guide here: https://app.gitbook.com/@project-anatha/s/validator-guide/
+
+---
+
 ## Executables
 
 |   Command   | Description                             |
