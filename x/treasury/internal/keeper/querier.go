@@ -106,7 +106,7 @@ func queryPrice(ctx sdk.Context, path []string, req abci.RequestQuery, k Keeper)
 		result = k.CalculateDinAmountExtended(ctx, coins)
 
 	} else {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid denomination. Expected usd or anatha.")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidCoins, "Invalid denomination. Expected fiat or anatha.")
 	}
 
 	res, err := codec.MarshalJSONIndent(types.ModuleCdc, result)

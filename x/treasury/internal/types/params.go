@@ -12,7 +12,7 @@ const (
 	DefaultParamspace = ModuleName
 
 	DefaultRiskAssesmentDuration 	= time.Hour * 24 * 3 // devnet: time.Second * 60 * 2
-	DefaultRiskAssesmentAmount		= 10000 // usd
+	DefaultRiskAssesmentAmount		= 10000 // fiat
 )
 
 var (
@@ -65,7 +65,7 @@ func (p *Params) ParamSetPairs() params.ParamSetPairs {
 
 func DefaultParams() Params {
 	manager, _ := sdk.AccAddressFromBech32(DefaultManagerAddress)
-	amount, _ := sdk.ConvertCoin(sdk.NewInt64Coin("usd", DefaultRiskAssesmentAmount), "din")
+	amount, _ := sdk.ConvertCoin(sdk.NewInt64Coin("fiat", DefaultRiskAssesmentAmount), "din")
 
 	return NewParams(
 		[]sdk.AccAddress{manager},

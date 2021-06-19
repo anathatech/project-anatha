@@ -29,12 +29,12 @@ func TestParseAndConvertCoins(t *testing.T) {
 		{"0.25sense", true, sdk.Coins{{"pin", sdk.NewInt(25000)}}},
 
 		{"100din", true, sdk.Coins{{"din", sdk.NewInt(100)}}},
-		{"1usd", true, sdk.Coins{{"din", sdk.NewInt(10000000000)}}},
-		{"0.25usd", true, sdk.Coins{{"din", sdk.NewInt(2500000000)}}},
-		{"0.0000000001usd", true, sdk.Coins{{"din", sdk.NewInt(1)}}},
+		{"1fiat", true, sdk.Coins{{"din", sdk.NewInt(10000000000)}}},
+		{"0.25fiat", true, sdk.Coins{{"din", sdk.NewInt(2500000000)}}},
+		{"0.0000000001fiat", true, sdk.Coins{{"din", sdk.NewInt(1)}}},
 
-		{"1anatha,1usd", true, sdk.Coins{{"din", sdk.NewInt(10000000000)}, {"pin", sdk.NewInt(100000000)}}},
-		{"0.5anatha,1usd", true, sdk.Coins{{"din", sdk.NewInt(10000000000)}, {"pin", sdk.NewInt(50000000)}}},
+		{"1anatha,1fiat", true, sdk.Coins{{"din", sdk.NewInt(10000000000)}, {"pin", sdk.NewInt(100000000)}}},
+		{"0.5anatha,1fiat", true, sdk.Coins{{"din", sdk.NewInt(10000000000)}, {"pin", sdk.NewInt(50000000)}}},
 	}
 
 	for tcIndex, tc := range cases {
