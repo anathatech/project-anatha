@@ -335,11 +335,16 @@ func NewAnathaApp(logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest
 		app.treasuryKeeper.SetParams(ctx, treasuryParams)
 	})
 
-	app.upgradeKeeper.SetUpgradeHandler("delayrewards", func(ctx sdk.Context, plan upgrade.Plan) {
-		// Delay reward withdrawal time by a year
-		distributionParams := app.distributionKeeper.GetParams(ctx)
-		distributionParams.RewardWithdrawalEnabledTime = distributionParams.RewardWithdrawalEnabledTime.Add(time.Hour * 24 * 365)
-		app.distributionKeeper.SetParams(ctx, distributionParams)
+	app.upgradeKeeper.SetUpgradeHandler("increasefee", func(ctx sdk.Context, plan upgrade.Plan) {
+		// Increase base tx fee
+		app.feeKeeper.SetParams(
+			ctx,
+			fee.NewParams(
+				app.feeKeeper.FeePercentage(ctx),
+				sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultDenom, 10000000000)),
+				sdk.NewCoins(sdk.NewInt64Coin(appConfig.DefaultDenom, 10000000000)),
+			),
+		)
 	})
 
 	// create evidence keeper with evidence router
