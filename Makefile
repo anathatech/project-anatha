@@ -1,6 +1,6 @@
 PACKAGES=$(shell go list ./... | grep -v '/simulation')
 
-VERSION := 0.3.0
+VERSION := 0.3.1
 COMMIT := $(shell git log -1 --format='%H')
 
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=Anatha \
